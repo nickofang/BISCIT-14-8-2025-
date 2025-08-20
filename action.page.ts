@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ColDef, GridApi } from 'ag-grid-community';
 import { ClientSideRowModelModule } from 'ag-grid-community';
 import { ModalController } from '@ionic/angular';
 import { BookDeliveryPage } from 'src/app/book-delivery/book-delivery.page';
 import { ActionService } from './action.service';
+import { HttpClient } from '@angular/common/http';
 
 // Define interface for order row
 interface OrderRow {
@@ -21,8 +22,8 @@ interface OrderRow {
   templateUrl: './action.page.html',
   styleUrls: ['./action.page.scss'],
 })
-export class ActionPage {
-  private gridApi!: GridApi<OrderRow>; // typed gridApi for OrderRow
+export class ActionPage implements OnInit {
+  private gridApi!: GridApi<OrderRow>;
 
   columnDefs: ColDef[] = [
     {
@@ -45,16 +46,27 @@ export class ActionPage {
     filter: true
   };
 
-  rowData: OrderRow[] = []; // initialize empty array with type
-
+  rowData: OrderRow[] = [];
   modules = [ClientSideRowModelModule];
+
+  userName: string = 'Customer'; // default fallback
 
   constructor(
     private modalCtrl: ModalController,
-    private actionService: ActionService
+    private actionService: ActionService,
+    private http: HttpClient
   ) {}
 
-onGridReady(params: any) {
+  ngOnInit() {
+    // Fetch the logged-in user's name from mock backend
+    this.http.get<{ name: string }>('api/currentUser')
+      .subscribe({
+        next: (res) => this.userName = res.name,
+        error: (err) => console.error('Failed to fetch user name', err)
+      });
+  }
+
+  onGridReady(params: any) {
     this.gridApi = params.api;
     this.loadOrders();
   }

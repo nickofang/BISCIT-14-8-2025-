@@ -1,0 +1,36 @@
+@import 'ag-grid-community/styles/ag-grid.css';
+@import 'ag-grid-community/styles/ag-theme-alpine.css';
+
+
+.ag-theme-alpine {
+    .ag-header-cell {
+      font-weight: bold;
+    }
+  
+    .ag-cell {
+      padding: 10px;
+    }
+  
+    /* Style the ion-button directly */
+    ion-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 16px;
+      height: 40px; /* Optional: fixed height */
+      width: 100%; /* Full width of parent */
+    }
+
+  
+    .action-button:hover {
+      background-color: #0056b3;
+    }
+  
+    .ag-row-hover {
+      background-color: #f1f1f1; /* Row hover effect */
+    }
+  }
+  
